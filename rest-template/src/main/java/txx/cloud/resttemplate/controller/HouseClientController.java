@@ -1,6 +1,9 @@
 package txx.cloud.resttemplate.controller;
 
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +15,9 @@ import txx.cloud.resttemplate.dto.HouseInfo;
 public class HouseClientController {
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    LoadBalancerClient loadBalancerClient;
 
 
     @GetMapping("/call/data")
@@ -37,5 +43,11 @@ public class HouseClientController {
         //Long id = restTemplate.postForObject("http://localhost:8081/house/save", houseInfo, Long.class);
         Long id = restTemplate.postForObject("http://ribbon-eureka-demo/house/save", houseInfo, Long.class);
         return id;
+    }
+
+    @GetMapping("/choose")
+    public Object choose(){
+        ServiceInstance instance = loadBalancerClient.choose("ribbon-eureka-demo");
+        return instance;
     }
 }
