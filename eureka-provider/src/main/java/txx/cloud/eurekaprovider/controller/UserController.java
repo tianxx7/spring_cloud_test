@@ -11,6 +11,6 @@ public class UserController {
     Environment environment;
     @GetMapping("/user/hello")
     public String hello(){
-        return "hi txx eureka";
+        return "hi txx eureka feign";
     }
 }
