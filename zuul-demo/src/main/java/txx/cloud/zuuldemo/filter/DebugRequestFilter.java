@@ -5,10 +5,13 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.sun.prism.shader.DrawEllipse_LinearGradient_PAD_AlphaTest_Loader;
 import org.apache.commons.io.IOUtils;
+import org.springframework.cloud.netflix.ribbon.RibbonHttpResponse;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 
 public class DebugRequestFilter extends ZuulFilter {
@@ -72,6 +75,31 @@ public class DebugRequestFilter extends ZuulFilter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        System.out.println("响应体:");
+        //获取响应体 1
+        /*try{
+            Object zuulResponse = context.get("zuulResponse");
+            if (zuulResponse != null) {
+                RibbonHttpResponse ribbonHttpResponse = (RibbonHttpResponse) zuulResponse;
+                String body = IOUtils.toString(ribbonHttpResponse.getBody());
+
+                System.out.println("Response:> "  + body);
+                ribbonHttpResponse.close();
+                context.setResponseBody(body);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        InputStream stream = context.getResponseDataStream();
+        try {
+            if (stream != null) {
+                String s = IOUtils.toString(stream, "UTF-8");
+                System.out.println("Response:> "  + s );
+                context.setResponseBody(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
