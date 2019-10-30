@@ -11,7 +11,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import txx.cloud.zuuldemo.base.ResponseCode;
 import txx.cloud.zuuldemo.base.ResponseData;
-import txx.cloud.zuuldemo.filter.JsonUtils;
+import txx.cloud.zuuldemo.util.JsonUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

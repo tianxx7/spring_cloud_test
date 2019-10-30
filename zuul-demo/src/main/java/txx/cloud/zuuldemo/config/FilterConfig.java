@@ -2,6 +2,7 @@ package txx.cloud.zuuldemo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import txx.cloud.zuuldemo.filter.DebugRequestFilter;
 import txx.cloud.zuuldemo.filter.ErrorFilter;
 import txx.cloud.zuuldemo.filter.IpFilter;
 
@@ -15,6 +16,11 @@ public class FilterConfig {
     @Bean
     public ErrorFilter errorFilter(){
         return new ErrorFilter();
+    }
+
+    @Bean
+    public DebugRequestFilter debugRequestFilter(){
+        return new DebugRequestFilter();
     }
 
 }
