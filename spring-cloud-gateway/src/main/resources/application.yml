@@ -5,8 +5,19 @@ spring:
     name: spring-cloud-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
       - id: path_route
         uri: http://nginx.xijiede.top
         predicates:
         - Path=/login
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://txx:123456@localhost:8761/eureka/
