@@ -14,6 +14,14 @@ spring:
         uri: http://nginx.xijiede.top
         predicates:
         - Path=/login
+        filters:
+        - AddRequestHeader=X-Request-Foo,Bar
+      - id: customer_route
+        uri: http://nginx.xijiede.top
+        predicates:
+        - name: CheckAuth
+          args:
+            name: txx
 
 eureka:
   instance:
