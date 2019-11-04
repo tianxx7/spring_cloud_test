@@ -9,19 +9,23 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+#url包含foo=ba*才看可以通过断言
       routes:
       - id: path_route
-        uri: http://nginx.xijiede.top
+        uri: http://localhost:8080
         predicates:
-        - Path=/login
-        filters:
-        - AddRequestHeader=X-Request-Foo,Bar
-      - id: customer_route
-        uri: http://nginx.xijiede.top
+        - Query=foo,ba.
+#请求的方法必须符合Method断言
+      - id: path_route
+        uri: http://localhost:8080
         predicates:
-        - name: CheckAuth
-          args:
-            name: txx
+        - Method=POST
+#请求头必须包含X-request-Id,且值是数字
+      - id: path_route
+        uri: http://localhost:8080
+        predicates:
+        - Header=X-Request-Id,\d+
+
 
 eureka:
   instance:

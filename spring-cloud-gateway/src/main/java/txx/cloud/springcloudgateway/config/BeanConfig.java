@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 public class BeanConfig {
+
 	@Bean
 	public KeyResolver ipKeyResolver() {
 		return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
