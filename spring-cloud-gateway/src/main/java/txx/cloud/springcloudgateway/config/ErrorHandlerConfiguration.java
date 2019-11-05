@@ -24,8 +24,8 @@ import java.util.List;
  * @author yinjihuan
  *
  */
-@Configuration
-@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class})
+//@Configuration
+//@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class})
 public class ErrorHandlerConfiguration {
 
     private final ServerProperties serverProperties;

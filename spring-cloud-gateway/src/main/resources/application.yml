@@ -1,22 +1,35 @@
 server:
   port: 2001
 spring:
+  redis:
+    host: 192.168.1.115
+    port: 6379
   application:
     name: spring-cloud-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+#      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
 #url包含foo=ba*才看可以通过断言
       routes:
-      - id: redirect_route
-        uri: http://localhost:8080
+      - id: rete_limit
+        uri: lb://EUREKA-CLIENT-USER-SERVICE
         predicates:
         - Method=GET
         filters:
-        - RedirectTo=302,http://www.baidu.com
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1  #允许用户每秒处理多少个请求
+            redis-rate-limiter.burstCapacity: 1  #令牌桶数量,允许在1秒内完成的最大请求数
+            key-resolver: "#{@ipKeyResolver}"
+#      - id: redirect_route
+#        uri: http://localhost:8080
+#        predicates:
+#        - Method=GET
+#        filters:
+#        - RedirectTo=302,http://www.baidu.com
 #      - id: add_request_header_route
 #        uri: http://localhost:8080
 #        predicates:
@@ -45,3 +58,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://txx:123456@localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
