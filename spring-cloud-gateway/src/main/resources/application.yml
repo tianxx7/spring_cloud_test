@@ -17,8 +17,9 @@ spring:
       - id: rete_limit
         uri: lb://EUREKA-CLIENT-USER-SERVICE
         predicates:
-        - Method=GET
+        - Path=/api/**
         filters:
+        - RewritePath=/api/(?<segment>.*), /$\{segment}
         - name: RequestRateLimiter
           args:
             redis-rate-limiter.replenishRate: 1  #允许用户每秒处理多少个请求
