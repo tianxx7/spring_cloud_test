@@ -8,7 +8,22 @@ spring:
     name: spring-cloud-gateway
   cloud:
     gateway:
-#      discovery:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            exposedHeaders:
+            - content-type
+            allowedHeaders:
+            - content-type
+            allowCredentials: true
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - POST
+      #      discovery:
 #        locator:
 #          enabled: true
 #          lower-case-service-id: true
