@@ -12,19 +12,28 @@ spring:
 #        locator:
 #          enabled: true
 #          lower-case-service-id: true
-#url包含foo=ba*才看可以通过断言
       routes:
-      - id: rete_limit
+      - id: user-server
         uri: lb://EUREKA-CLIENT-USER-SERVICE
         predicates:
-        - Path=/api/**
+        - Path=/user-service/**
         filters:
-        - RewritePath=/api/(?<segment>.*), /$\{segment}
-        - name: RequestRateLimiter
+        - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - name: Hystrix
           args:
-            redis-rate-limiter.replenishRate: 1  #允许用户每秒处理多少个请求
-            redis-rate-limiter.burstCapacity: 1  #令牌桶数量,允许在1秒内完成的最大请求数
-            key-resolver: "#{@ipKeyResolver}"
+            name: fallback
+            fallbackUri: forward:/fallback
+#      - id: rete_limit
+#        uri: lb://EUREKA-CLIENT-USER-SERVICE
+#        predicates:
+#        - Path=/api/**
+#        filters:
+#        - RewritePath=/api/(?<segment>.*), /$\{segment}
+#        - name: RequestRateLimiter
+#          args:
+#            redis-rate-limiter.replenishRate: 10  #允许用户每秒处理多少个请求
+#            redis-rate-limiter.burstCapacity: 20  #令牌桶数量,允许在1秒内完成的最大请求数
+#            key-resolver: "#{@ipKeyResolver}"
 #      - id: redirect_route
 #        uri: http://localhost:8080
 #        predicates:
@@ -37,6 +46,7 @@ spring:
 #        - Method=GET
 #        filters:
 #        - AddRequestHeader=X-Request-Foo,Bar
+#url包含foo=ba*才看可以通过断言
 #      - id: path_route
 #        uri: http://localhost:8080
 #        predicates:
