@@ -14,7 +14,7 @@ import java.util.List;
 
 public class IpFilter extends ZuulFilter {
     //IP黑名单列表
-    private List<String> blackIpList = Arrays.asList("127.0.0.1");
+    private List<String> blackIpList = Arrays.asList("");
 
     @Override
     public String filterType() {

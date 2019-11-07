@@ -16,19 +16,20 @@ import java.util.List;
 @Component
 @Primary
 public class DocumentationConfig implements SwaggerResourcesProvider {
+
     @Autowired
     private DiscoveryClient discoveryClient;
 
     @Value("${spring.application.name}")
     private String applicationName;
+
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
-        discoveryClient.getServices().stream()
-                .filter(s -> !s.equals(applicationName))
-                .forEach(name -> {
-                    resources.add(swaggerResource(name,"/"+name+"/v2/api-docs","2.0"));
-                });
+        // 排除自身，将其他的服务添加进去
+        discoveryClient.getServices().stream().filter(s -> !s.equals(applicationName)).forEach(name -> {
+            resources.add(swaggerResource(name, "/" + name + "/v2/api-docs", "2.0"));
+        });
         return resources;
     }
 
@@ -39,4 +40,5 @@ public class DocumentationConfig implements SwaggerResourcesProvider {
         swaggerResource.setSwaggerVersion(version);
         return swaggerResource;
     }
+
 }

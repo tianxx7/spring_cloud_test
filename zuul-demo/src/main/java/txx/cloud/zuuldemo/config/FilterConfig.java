@@ -18,9 +18,9 @@ public class FilterConfig {
         return new ErrorFilter();
     }
 
-    @Bean
+    /*@Bean
     public DebugRequestFilter debugRequestFilter(){
         return new DebugRequestFilter();
-    }
+    }*/
 
 }
