@@ -96,7 +96,8 @@ public class DebugRequestFilter extends ZuulFilter {
             if (stream != null) {
                 String s = IOUtils.toString(stream, "UTF-8");
                 System.out.println("Response:> "  + s );
-                context.setResponseBody(s);
+                context.getResponse().setHeader("Content-Type","application/json;charset=UTF-8");
+                RequestContext.getCurrentContext().setResponseBody(s);
             }
         } catch (IOException e) {
             e.printStackTrace();
